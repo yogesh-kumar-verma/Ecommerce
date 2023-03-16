@@ -1,0 +1,77 @@
+<nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
+  <a class="navbar-brand" href="/home">ClothesMart</a>
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav ml-auto">
+      <% if(name) {%>
+
+      <li class="nav-item a">
+        <a class="nav-link" href="/"><%= name %></a>
+      </li>
+      <% if(isSeller){ %>
+      <li class="nav-item dropdown">
+        <a
+          class="nav-link dropdown-toggle btn btn-outline-info text-lights me-2 "
+          href="#"
+          id="navbarDropdown1"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Seller
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
+          <a class="dropdown-item" href="/seller">Seller Panel</a>
+          <a class="dropdown-item" href="/seller/delivery">Your Deliveries</a>
+          
+      </li>
+      
+      <%}%>
+      <li class="nav-item dropdown">
+        <a
+          class="nav-link dropdown-toggle btn btn-outline-info me-2 mx-2"
+          href="#"
+          id="navbarDropdown"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Account
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/cart">MyCart</a>
+          <a class="dropdown-item" href="/placeorder/myorders">MyOrders</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/changepass">Change Password</a>
+        </div>
+      </li>
+
+      <li class="nav-item a">
+        <a class="nav-link" href="/logout">Logout</a>
+      </li>
+
+      <% } else {%>
+      <li class="nav-item">
+        <a class="nav-link" href="/login">Login</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/signup">Sign up</a>
+      </li>
+      <% }%>
+    </ul>
+  </div>
+</nav>
