@@ -27,7 +27,7 @@
     ></script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-      integrity="sha384-JZR6Spejh4U02d8jOt6vLEhfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
       crossorigin="anonymous"
     ></script>
 
@@ -44,22 +44,24 @@
         <thead>
           <tr>
             <th scope="col">ITEM ID</th>
+            <th scope="col">ITEM Name</th>
             <th scope="col">QUANTITY</th>
             <th scope="col">ADDRESS</th>
             <th scope="col">USER TO BE DELIVER</th>
           </tr>
         </thead>
         <tbody>
-          <% deliveries.forEach((delivery)=>{ delivery.items.forEach((item)=>{%>
+          <% deliveries.forEach((delivery)=>{ %>
 
           <tr>
-            <th scope="row"><%=item.id%></th>
-            <td><%=item.quantity%></td>
+            <th scope="row"><%=delivery._id%></th>
+            <td><%= delivery.name%></td>
+            <td><%=delivery.orderedquantity%></td>
             <td><%=delivery.address%></td>
             <td>@<%=delivery.name%></td>
           </tr>
 
-          <% }) })%>
+          <% })%>
         </tbody>
       </table>
     </div>

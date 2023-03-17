@@ -12,6 +12,20 @@ const getUserByUsername = async (username) => {
   let user = await UserModal.findOne({ username: username });
   return user;
 };
+const createUser = async (name, email, username, password, mobile) => {
+  let userCurrent = new UserModal();
+  userCurrent.name = name;
+  userCurrent.email = email;
+  userCurrent.username = username;
+  userCurrent.password = password;
+  userCurrent.mobile = mobile;
+  userCurrent.isSeller = false;
+  userCurrent.isVerified = false;
+  userCurrent.mailToken = Date.now();
+
+  await userCurrent.save();
+  return userCurrent;
+};
 const createSeller = async (name, email, username, password, mobile) => {
   let userCurrent = new UserModal();
   userCurrent.name = name;
@@ -47,4 +61,5 @@ module.exports = {
   getUserByMailToken,
   updateUserWithToken,
   getUserByUsername,
+  createUser,
 };

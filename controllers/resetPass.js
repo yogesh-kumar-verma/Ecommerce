@@ -1,9 +1,10 @@
 const UserModal = require("../database/users");
+const { getUserByMailToken } = require("../services/userMongoServices");
 
 const resetGet = async (req, res) => {
   const { token } = req.params;
 
-  let user = await UserModal.findOne({ mailToken: token });
+  let user = await getUserByMailToken(token);
   if (user.mailToken == token) {
     flag = true;
     req.session.name = users[i].name;

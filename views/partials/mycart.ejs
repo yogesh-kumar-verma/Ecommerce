@@ -5,21 +5,21 @@
     class="card-img-top img-fluid"
     src="<%=data.images %>"
     alt="Card image cap"
-    onclick="popup(`<%=data.id%>`,`<%=data.name%>`,`<%=data.description%>`,`<%=data.price%>`,`<%=data.images%>`)"
+    onclick="popup(`<%=data._id%>`,`<%=data.name%>`,`<%=data.description%>`,`<%=data.price%>`,`<%=data.images%>`)"
   />
 
   <div class="card-body">
     <h5 class="card-title"><%=data.name %></h5>
-    <div id="<%=data.id%>">
+    <div id="<%=data._id%>">
 
-      <button  class="btn btn-secondary minus"onclick="checkquantity(`<%=data.quantity%>`,`<%=data.id%>`)"    > - </button>
+      <button  class="btn btn-secondary minus"onclick="checkquantity(`<%=data.quantity%>`,`<%=data._id%>`)"    > - </button>
       <span class="quantity" ><%=quantity %> </span>
       
-    <button class="btn btn-secondary plus" onclick="checkquantity(`<%=data.quantity%>`,`<%=data.id%>`)"  > + </button>
+    <button class="btn btn-secondary plus" onclick="checkquantity(`<%=data.quantity%>`,`<%=data._id%>`)"  > + </button>
       <span class="left" >Stock left: <%=data.quantity%></span>
      <br>
-      <a href="/product/deletecart/<%=data.id%>" class="btn btn-danger delete my-1">Delete  </a>
-      <a href="/product/<%=data.id%>" class="btn btn-warning my-1 ">View Details </a>
+      <a href="/product/deletecart/<%=data._id%>" class="btn btn-danger delete my-1">Delete  </a>
+      <a href="/product/<%=data._id%>" class="btn btn-warning my-1 ">View Details </a>
     </div>
    
   </div>

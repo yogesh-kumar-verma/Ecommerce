@@ -46,14 +46,13 @@
     </a>
 
     <div class="d-flex flex-row" id="maincon">
-      <% products.forEach((number,index,product)=>{ cart.forEach((value)=>{
-      if(value.id==product[index].id){%>
+      <% if(cart.cartitems!=null)cart.cartitems.forEach((value)=>{ %>
       <div class="col-sm-12 col-md-5 col-lg-3">
-        <%-include('partials/mycart',
-        {data:product[index],quantity:value.quantity }); %>
+        <%-include('partials/mycart', {data:value.item,quantity:value.quantity
+        }); %>
       </div>
 
-      <% }}) }) %>
+      <% }) %>
     </div>
     <script>
       if (document.getElementById("maincon").innerText.length < 1) {

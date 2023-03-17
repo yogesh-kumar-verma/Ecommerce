@@ -5,10 +5,11 @@
     class="card-img-top img-fluid"
     src="<%=data.images %>"
     alt="Card image cap"
+    style="max-height: 18rem; min-height: 18rem"
   />
 
-  <div id="<%=data.id%>" class="card-body">
-    <p class="id">ID:-<%=data.id %></p>
+  <div id="<%=data._id%>" class="card-body">
+    <p class="id">ID:-<%=data._id %></p>
     <p class="name">Name:-<%=data.name %></p>
     <% let currdata =data.description.toString().substr(0,25) +"..." %>
     <p class="desc">Desc:-<%=currdata %></p>
@@ -17,11 +18,11 @@
 
     <button
       class="btn btn-info update"
-      onclick="popup(`<%=data.id%>`,`<%=data.name%>`,`<%=data.description%>`,`<%=data.price%>`,`<%=data.images%>`,`<%=data.quantity%>`)"
+      onclick="popup(`<%=data._id%>`,`<%=data.name%>`,`<%=data.description%>`,`<%=data.price%>`,`<%=data.images%>`,`<%=data.quantity%>`)"
     >
       Update
     </button>
-    <a class="btn btn-danger delete" href="/product/delete/<%=data.id%>"
+    <a class="btn btn-danger delete" href="/product/delete/<%=data._id%>"
       >Delete
     </a>
   </div>

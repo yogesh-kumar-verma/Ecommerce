@@ -26,35 +26,34 @@
     <%- include('partials/header', {name: name ,isSeller:isSeller}); %>
     <br />
     <br />
-    <!-- <%=product[0]%> -->
-
+    
     <div class="d-flex flex-row row" id="maincon">
       <% if(placeorder){ placeorder.forEach((order)=>{
-      order.items.forEach((item)=>{ product.forEach((prod)=>{
-      if(prod.id==item.id){%> 
+      order.cartitems.forEach((cartitem)=>{
+      %> 
         <div class="col-sm-3 col-12">
 
             <div class="card shadow  py-2 px-1" style="width: 20rem" ">
                 <img
                 class="card-img-top img-fluid"
-                src="<%=prod.images %>"
+                src="<%=cartitem.item.images %>"
                 alt="Card image cap"
                 
                 />
                 
                 <div class="card-body">
-                    <h5 class="card-title">Name:-<%=prod.name %></h5>
+                    <h5 class="card-title">Name:-<%=cartitem.item.name %></h5>
                     <h5 class="card-title">Address:-<%=order.address %></h5>
-                    <h5 class="card-title">Quantity:-<%=item.quantity%></h5>
-                    <h5 class="card-title">Price:-<%=prod.price%></h5>
-                    <h5 class="card-title">Total:-<%=item.quantity * prod.price %></h5>
-                     <a class="btn btn-lg btn-danger"href="cancel/<%=order._id%>/<%=prod.id%>" >CancelOrder</a >
-                      <a class="btn btn-lg btn-warning mt-2"   href="cancel/<%=order._id%>/<%=prod.id%>" >Confirm Delivery</a >
+                    <h5 class="card-title">Quantity:-<%=cartitem.quantity%></h5>
+                    <h5 class="card-title">Price:-<%=cartitem.item.price%></h5>
+                    <h5 class="card-title">Total:-<%=cartitem.quantity * cartitem.item.price %></h5>
+                     <a class="btn btn-lg btn-danger"href="cancel/<%=order._id%>/<%=cartitem.item._id%>" >CancelOrder</a >
+                      <a class="btn btn-lg btn-warning mt-2"   href="cancel/<%=order._id%>/<%=cartitem.item._id%>" >Confirm Delivery</a >
                 </div>
             </div>
             
         </div>
-            <%}}) })}) } %>
+            <% })}) } %>
     </div>
     <script>
         if (document.getElementById("maincon").innerText.length < 1) {

@@ -31,6 +31,7 @@ app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static(__dirname + "/uploads"));
+app.use("/product/uploads", express.static(__dirname + "/uploads"));
 app.use("/seller/uploads", express.static(__dirname + "/uploads"));
 app.use("/fetchAll/uploads", express.static(__dirname + "/uploads"));
 app.use("/placeorder/uploads", express.static(__dirname + "/uploads"));

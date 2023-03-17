@@ -1,8 +1,8 @@
 const fs = require("fs");
 const dir =
   "/home/yogesh/webprojects/CodeQuotient/web-projects-Html-Css-Js-/EcommerceWithMongo/user.txt";
-const forgotPass = require("../methods/forgotEmail");
-const UserModal = require("../database/users");
+  const UserModal = require("../database/users");
+  const forgotPass = require("../methods/forgotEmail");
 const { getUserByEmail } = require("../services/userMongoServices");
 const forgetUserGet = (req, res) => {
   res.render("forgot.ejs");

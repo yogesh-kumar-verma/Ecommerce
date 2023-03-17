@@ -3,6 +3,11 @@ const dir =
   "/home/yogesh/webprojects/CodeQuotient/web-projects-Html-Css-Js-/EcommerceWithMongo/user.txt";
 const UserModal = require("../database/users");
 const sendEmail = require("../methods/sendEmail");
+const {
+  getUserByUsername,
+  getUserByEmail,
+  createUser,
+} = require("../services/userMongoServices");
 const signupUserGet = (req, res) => {
   let name = null;
   let error = null;
@@ -10,13 +15,13 @@ const signupUserGet = (req, res) => {
   return;
 };
 const signupUserPost = async (req, res) => {
-  let user = await UserModal.findOne({ username: req.body.username });
-  let email = await UserModal.findOne({ email: req.body.email });
+  let user = await getUserByUsername(req.body.username);
+  let email = await getUserByEmail(req.body.email);
   let flag = false;
   let { name, username, email1, password, mobile } = req.params;
   if (!name || !username || !email1 || !password || !mobile) {
     let name = null;
-    let error = "please fill all the details correctly"
+    let error = "please fill all the details correctly";
 
     res.render("signup.ejs", { name, error, isSeller: false });
     return;
@@ -34,15 +39,13 @@ const signupUserPost = async (req, res) => {
     res.render("signup.ejs", { name, error, isSeller: false });
     return;
   } else {
-    let userCurrent = new UserModal();
-    userCurrent.name = req.body.name;
-    userCurrent.email = req.body.email;
-    (userCurrent.username = req.body.username),
-      (userCurrent.password = req.body.password);
-    userCurrent.mobile = req.body.mobile;
-    (userCurrent.isVerified = false), (userCurrent.mailToken = Date.now());
-
-    userCurrent.save();
+    let userCurrent = await createUser(
+      req.body.name,
+      req.body.email,
+      req.body.username,
+      req.body.password,
+      req.body.mobile
+    );
 
     sendEmail(
       req.body.email,

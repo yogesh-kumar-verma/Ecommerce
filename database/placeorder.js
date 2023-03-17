@@ -13,15 +13,17 @@ const PlaceorderSchema = new Schema({
   address: {
     type: String,
   },
-  items: {
-    type: Array,
-  },
+  cartitems: [
+    {
+      item: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "product",
+      },
+      quantity: Number,
+    },
+  ],
   total: {
     type: Number,
-  },
-  seller: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "user",
   },
 });
 const PlacorderModal = mongoose.model("placeorder", PlaceorderSchema);

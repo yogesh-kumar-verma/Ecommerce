@@ -7,26 +7,26 @@ const productdir =
 
 const ProductModal = require("../database/product");
 const CartModal = require("../database/cart");
-const { cartGetByUsername } = require("../services/cartMongoServices");
-const { getAllProducts } = require("../services/productMongoServices");
+const {
+  cartGetByUsernameWithCartitems,
+} = require("../services/cartMongoServices");
 
 const cartGet = async (req, res) => {
   let { username } = req.session.user;
 
-  let cart = await cartGetByUsername(username);
-  // console.log(cart);
+  let cart = await cartGetByUsernameWithCartitems(username);
+ 
+  // console.log(cart.cartitems[0].item);
   if (cart != null) {
-    let products = await getAllProducts();
     res.render("mycart.ejs", {
-      products: products,
-      cart: cart.cartitems,
+      // products: products,
+      cart: cart,
       name: req.session.name,
       isSeller: req.session.user.isSeller,
     });
   } else {
-    let products = [];
     res.render("mycart.ejs", {
-      products: products,
+      // products: products,
       cart: [],
       name: req.session.name,
       isSeller: req.session.user.isSeller,
