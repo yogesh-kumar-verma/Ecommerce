@@ -40,7 +40,7 @@
     <br />
     <div id="maincontainer">
       <div style="z-index: 1">
-        <% cart.cartitems.forEach((cartitem)=>{ %>
+        <% cart.forEach((cartitem)=>{ %>
         <div
           style="background-color: rgb(231, 231, 231); width: 100%"
           class="py-2 px-2 mx-3 my-3 rounded shadows"
@@ -59,7 +59,7 @@
                 <div class="card-body">
                   <h5 class="card-title">Name: <%=cartitem.item.name %></h5>
                   <h5 class="card-title">
-                    Description:<%=cartitem.item.name %>
+                    Description:<%=cartitem.item.desc %>
                   </h5>
                   <h5 class="card-title">Price:<%=cartitem.item.price %></h5>
                   <h5 class="card-title">Quantity:<%=cartitem.quantity%></h5>

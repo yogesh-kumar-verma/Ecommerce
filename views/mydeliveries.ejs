@@ -55,10 +55,10 @@
 
           <tr>
             <th scope="row"><%=delivery._id%></th>
-            <td><%= delivery.name%></td>
-            <td><%=delivery.orderedquantity%></td>
+            <td><%= delivery.item.name%></td>
+            <td><%=delivery.quantity%></td>
             <td><%=delivery.address%></td>
-            <td>@<%=delivery.name%></td>
+            <td>@<%=delivery.username%></td>
           </tr>
 
           <% })%>

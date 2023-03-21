@@ -16,6 +16,9 @@ const {
   createCart,
   cartGetByKeyUserWith_Id,
   cartUpdateBy_Id,
+  deleteCartByItem,
+  updateCart,
+  cartGetByUsernameWithCartitems,
 } = require("../services/cartMongoServices");
 const {
   getProductBy_Id,
@@ -39,31 +42,25 @@ const addcartmoreGet = async (req, res) => {
   console.log(id);
 
   let { username } = req.session.user;
-  let cart = await cartGetByUsername(username);
+  let cart = await cartGetByUsernameWithCartitems(username);
   let quantity;
   if (cart !== null) {
     let not_in_cart = true;
 
-    cart.cartitems.forEach((value) => {
-      if (value.item == id) {
+    cart.forEach(async (value) => {
+      if (value.item._id == id) {
         value.quantity = value.quantity + 1;
         quantity = value.quantity;
         not_in_cart = false;
+        await updateCart(value._id, quantity);
       }
     });
     if (not_in_cart) {
-      let cartItem = new Object({
-        item: id,
-        quantity: 1,
-      });
-      cart.cartitems.push(cartItem);
-      await cartUpdateByUsername(username, cart.cartitems);
+      await createCart(req.session.user.username, id, 1);
       quantity = 1;
     }
-
-    await cartUpdateByUsername(username, cart.cartitems);
   } else {
-    await createCart(username, id);
+    await createCart(username, id, 1);
 
     quantity = 1;
   }
@@ -77,37 +74,30 @@ const addcartGet = async (req, res) => {
 
   let { username } = req.session.user;
 
-  let cart = await cartGetByUsername(username);
+  let cart = await cartGetByUsernameWithCartitems(username);
   let product = await getProductBy_Id(id);
   let quantity;
+  console.log(cart);
   if (cart !== null) {
     let not_in_cart = true;
-    cart.cartitems.forEach((value) => {
-      if (value.item == id) {
+    cart.forEach(async (value) => {
+      if (value.item._id == id) {
         value.quantity = value.quantity + 1;
         quantity = value.quantity;
         not_in_cart = false;
+        await updateCart(value._id, quantity);
       }
     });
     if (not_in_cart) {
-      let cartItem = new Object({
-        item: id,
-        quantity: 1,
-      });
-      cart.cartitems.push(cartItem);
-      await cartUpdateByUsername(req.session.user.username, cart.cartitems);
+      // cart.cartitems.push(cartItem);
+      await createCart(req.session.user.username, id, 1);
 
       quantity = 1;
     }
 
-    let updated = await cartUpdateByUsername(
-      req.session.user.username,
-      cart.cartitems
-    );
-    console.log(updated);
     res.redirect("/cart");
   } else {
-    await createCart(username, id);
+    await createCart(username, id, 1);
 
     quantity = 1;
     res.redirect("/cart");
@@ -120,29 +110,24 @@ const minusGet = async (req, res) => {
 
   let { username } = req.session.user;
   let quantity;
-  let cart = await cartGetByKeyUserWith_Id(req.session.user._id);
+  let cart = await cartGetByUsernameWithCartitems(username);
 
   if (cart !== null) {
-    cart.cartitems.forEach((value) => {
-      if (value.item == id) {
+    cart.forEach(async (value) => {
+      if (value.item._id == id) {
         value.quantity = value.quantity - 1;
         quantity = value.quantity;
+        await updateCart(value._id, quantity);
       }
     });
-
-    let cartup = await cartUpdateBy_Id(req.session.user._id, cart.cartitems);
   }
   res.send(JSON.stringify(quantity));
 };
 const deletecartGet = async (req, res) => {
   const { id } = req.params;
   let { username } = req.session.user;
-  let cart = await cartGetByKeyUserWith_Id(req.session.user._id);
+  let deltecart = await deleteCartByItem(id, username);
 
-  let newcart = cart.cartitems.filter((element) => {
-    return element.item !== id;
-  });
-  let cartup = await cartUpdateBy_Id(req.session.user._id, cart.cartitems);
   res.redirect("/cart");
 };
 const productUpdatePost = async (req, res) => {

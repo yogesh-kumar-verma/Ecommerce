@@ -7,21 +7,22 @@ const PlaceorderSchema = new Schema({
   username: {
     type: String,
   },
-  name: {
-    type: String,
+  seller: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user",
   },
   address: {
     type: String,
   },
-  cartitems: [
-    {
-      item: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "product",
-      },
-      quantity: Number,
-    },
-  ],
+
+  item: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "product",
+  },
+  quantity: {
+    type: Number,
+  },
+
   total: {
     type: Number,
   },

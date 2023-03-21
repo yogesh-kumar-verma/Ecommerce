@@ -3,6 +3,7 @@ const app = express();
 const fs = require("fs");
 const session = require("express-session");
 const port = 3000;
+const dotenv = require("dotenv");
 //  MIddlewares importing
 const isAuth = require("./middleware/isAuth");
 const sendEmail = require("./methods/sendEmail");
@@ -27,6 +28,7 @@ const initDB = require("./database/init");
 initDB().catch((err) => console.log(err));
 
 // default middle wares to use
+dotenv.config();
 app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -66,8 +68,11 @@ app.route("/logout").get((req, res) => {
 });
 app
   .route("*")
-  .get((req, res) => {
-    res.send("wrong point friend");
+  .get(async (req, res) => {
+   
+
+
+    res.send(`wrong point friend$`);
   })
   .post((req, res) => {
     res.send("wrong point friend");
