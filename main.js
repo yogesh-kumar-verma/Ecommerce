@@ -69,9 +69,6 @@ app.route("/logout").get((req, res) => {
 app
   .route("*")
   .get(async (req, res) => {
-   
-
-
     res.send(`wrong point friend$`);
   })
   .post((req, res) => {

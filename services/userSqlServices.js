@@ -1,8 +1,24 @@
 // const UserModal = require("../database/users");
 let initDB = require("../database/pool");
-let pool = initDB();
-function createTableIfNotExit() {
-  console.log(pool);
+const sql = require("mssql");
+let { sqlc } = require("../database/pool");
+const usertable = "users";
+async function createTableIfNotExit() {
+  let pool = await sqlc;
+  const result = await pool.request()
+    .query(`create table if not exits ${usertable}(
+      user_id identity(1,1) integer primary key, 
+      name varchar(50),
+    email varchar(50) ,
+    username varchar(50) ,
+    password varchar(50) ,
+    mailToken varchar(50) ,
+    isVerified Number(1) default=0,
+    isSeller  Number(1) default=0,
+    CONSTRAINT ck_testbool_ischk CHECK (isVerified IN (1,0)),
+    CONSTRAINT ck_testbool_ischk1 CHECK (isSeller IN (1,0))
+    
+    `);
 }
 
 createTableIfNotExit();

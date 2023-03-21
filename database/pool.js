@@ -14,8 +14,5 @@ const config = {
   },
   port: 1433,
 };
-module.exports = async function main() {
-  let pool = await sql.connect(config);
-
-  return pool;
-};
+const sqlc = sql.connect(config);
+module.exports = { sqlc };
