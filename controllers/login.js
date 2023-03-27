@@ -1,18 +1,25 @@
-const UserModal = require("../database/users");
+const dotenv = require("dotenv");
+dotenv.config();
+ 
 
-const fs = require("fs");
-const { getUserByUsername } = require("../services/userMongoServices");
-
-const dir =
-  "/home/yogesh/webprojects/CodeQuotient/web-projects-Html-Css-Js-/EcommerceWithMongo/user.txt";
+if (process.env.ISSQL) {
+  console.log("sql ke login mode on");
+  var {
+    getUserByUsername,
+  } = require("../services/sqlservices/userSqlServices");
+} else {
+  console.log("mongoose ke login mode on");
+  var { getUserByUsername } = require("../services/userMongoServices");
+}
 const loginUserGet = (req, res) => {
   let name = null;
   let error = null;
+
   res.render("login.ejs", { name, error, isSeller: false });
   return;
 };
 const loginUserPost = async (req, res) => {
-  let user = await getUserByUsername( req.body.username);
+  let user = await getUserByUsername(req.body.username);
 
   if (user == null || user.password !== req.body.password) {
     let name = null;
@@ -29,6 +36,7 @@ const loginUserPost = async (req, res) => {
 
       req.session.is_logged_in = true;
       req.session.name = user.name;
+      
 
       res.redirect("/");
       return;

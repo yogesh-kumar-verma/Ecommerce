@@ -1,0 +1,47 @@
+
+-- CREATE TABLE [dbo].[products] (
+--     [_id]         INT           IDENTITY (1, 1) NOT NULL,
+--     [seller]      INT           NULL,
+--     [discount]    VARCHAR (250) NULL,
+--     [image]       VARCHAR (250) NULL,
+--     [description] VARCHAR (250) NULL,
+--     [price]       MONEY         NULL,
+--     [currency]    VARCHAR (10)  CONSTRAINT [DEFAULT_products_currency] DEFAULT 'USD' NULL,
+--     [brand]       VARCHAR (30)  CONSTRAINT [DEFAULT_products_brand] DEFAULT 'BEST BRAND' NULL,
+--     [category]    VARCHAR (30)  CONSTRAINT [DEFAULT_products_category] DEFAULT 'GENERAL ' NULL,
+--     [colors]      VARCHAR (30)  CONSTRAINT [DEFAULT_products_colors] DEFAULT 'BLACK' NULL,
+--     [quantiy]     INT           NULL,
+--     PRIMARY KEY CLUSTERED ([_id] ASC),
+--     FOREIGN KEY ([seller]) REFERENCES [dbo].[users] ([_id])
+-- ); 
+--  CREATE TABLE products (
+
+--     _id int PRIMARY KEY IDENTITY(1,1),
+--      seller int ,
+--     discount VARCHAR(250),
+   
+--     image VARCHAR(250),
+--     description VARCHAR(250),
+--     price money,
+--     currency VARCHAR(10) ,
+--     brand VARCHAR(30) ,
+--     category VARCHAR(30) ,
+--     colors VARCHAR(30) ,
+--     quantiy int,
+--     FOREIGN KEY (seller) REFERENCES users(_id)  
+--  )
+-- addNewProduct
+--  INSERT into products (seller,description,images,quantity,price,name) VALUES (1,'a new product ','some random image link',1,12,'the laptop')
+-- getProductBy_Id
+--  SELECT * from products WHERE _id =1;
+-- getAllProducts
+  -- SELECT * from products
+-- productWithLimitsAndSkips
+-- SELECT * FROM users 
+-- WHERE user_id=3
+-- ORDER BY Id
+-- OFFSET 10 ROWS
+-- FETCH NEXT 10 ROWS ONLY;
+-- select * from products ORDER BY  _id LIMITS 1,1; 
+  --  alter table [dbo].[products]  image images;
+  -- EXEC sp_rename 'products.quantiy', 'quantity','COLUMN'; 

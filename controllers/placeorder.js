@@ -2,56 +2,74 @@ const CartModal = require("../database/cart");
 const ProductModal = require("../database/product");
 const PlaceorderModal = require("../database/placeorder");
 const { v4: uuidv4 } = require("uuid");
-const {
-  deleteCartByUsername,
-  cartGetByUsername,
-  cartGetByUsernameWithCartitems,
-  deleteCartByItem,
-} = require("../services/cartMongoServices");
-const {
-  getProductBy_Id,
-  updateProductWith_Id,
-} = require("../services/productMongoServices");
-const {
-  newOrderPlace,
-  updatePlaceOrderBy_Id,
-  deletePlaceOrderBy_Id,
-  findPlaceOrderBy_Id,
-  getMyordersWithItemsBy_Id,
-} = require("../services/placeorderMongoServices");
+const dotenv = require("dotenv");
+dotenv.config();
+if (process.env.ISSQL) {
+  var {
+    cartGetByIdWithCartitems,
+    deleteCartBy_Id,
+  } = require("../services/sqlservices/cartSqlServices");
+  var {
+    getProductBy_Id,
+    updateProductWith_Id,
+  } = require("../services/sqlservices/productSqlServices");
+  var {
+    newOrderPlace,
 
+    deletePlaceOrderBy_Id,
+
+    getMyordersWithItemsBy_Id,
+  } = require("../services/sqlservices/placeorderSqlServices");
+} else {
+  var {
+    cartGetByIdWithCartitems,
+    deleteCartBy_Id,
+  } = require("../services/cartMongoServices");
+  var {
+    getProductBy_Id,
+    updateProductWith_Id,
+  } = require("../services/productMongoServices");
+  var {
+    newOrderPlace,
+
+    deletePlaceOrderBy_Id,
+
+    getMyordersWithItemsBy_Id,
+  } = require("../services/placeorderMongoServices");
+}
 const placeOrderGet = async (req, res) => {
-  let cart = await cartGetByUsernameWithCartitems(req.session.user.username);
+  let cart = await cartGetByIdWithCartitems(req.session.user._id);
 
   res.render("placeorder.ejs", {
     name: req.session.user.name,
-    isSeller: req.session.user.isSeller,
+    isSeller: req.session.user.role,
     cart: cart,
   });
 };
 const placedOrderPost = async (req, res) => {
-  let cart = await cartGetByUsernameWithCartitems(req.session.user.username);
+  let cart = await cartGetByIdWithCartitems(req.session.user._id);
 
   // let product = await ProductModal.find({});
   // console.log(cart);
   let { total } = req.params;
   // console.log("req boyd", req.body);
   // placeorder.username = cart.username;
+  console.log(cart, "CART hai place wla");
   cart.forEach(async (value) => {
-    let prod = await getProductBy_Id(value.item._id);
-    let quantity = prod.quantity - value.quantity;
-    let product = await updateProductWith_Id(value.item._id, quantity);
-    await deleteCartByItem(value.item._id, req.session.user.username);
+    let prod = await getProductBy_Id(value.product_id);
+    let quantity = value.stock - value.quantity;
+    let product = await updateProductWith_Id(value.product_id, quantity);
+    await deleteCartBy_Id(value._id);
   });
-  // console.log(cart._id);
-  
+  console.log("yha tk pahuch rha hai");
   let placeorder = await newOrderPlace(
     req.body.address,
+    req.body.city,
+    req.body.state,
+    req.body.pincode,
     req.session.user._id,
     cart,
-
-    req.session.user.username,
-    req.session.user.name
+    total
   );
 
   res.json("Your Order Placed SucessFully");
@@ -70,7 +88,7 @@ const placedOrderGet = async (req, res) => {
   res.render("myorders.ejs", {
     name: req.session.user.name,
     placeorder: placeorder,
-    isSeller: req.session.user.isSeller,
+    isSeller: req.session.user.role,
   });
 };
 const placedOrderDelete = async (req, res) => {

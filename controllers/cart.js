@@ -1,35 +1,31 @@
-const fs = require("fs");
-const cartdir =
-  "/home/yogesh/webprojects/CodeQuotient/web-projects-Html-Css-Js-/EcommerceWithMongo/cart.txt";
-
-const productdir =
-  "/home/yogesh/webprojects/CodeQuotient/web-projects-Html-Css-Js-/EcommerceWithMongo/product.txt";
-
-const ProductModal = require("../database/product");
-const CartModal = require("../database/cart");
-const {
-  cartGetByUsernameWithCartitems,
-} = require("../services/cartMongoServices");
+const dotenv = require("dotenv");
+dotenv.config();
+if (process.env.ISSQL) {
+  var {
+    cartGetByIdWithCartitems,
+  } = require("../services/sqlservices/cartSqlServices");
+} else {
+  var { cartGetByIdWithCartitems } = require("../services/cartMongoServices");
+}
 
 const cartGet = async (req, res) => {
-  let { username } = req.session.user;
+  let { _id } = req.session.user;
 
-  let cart = await cartGetByUsernameWithCartitems(username);
- 
-  // console.log(cart.cartitems[0].item);
-  if (cart != null) {
+  let cart = await cartGetByIdWithCartitems(_id);
+
+  if (cart != undefined) {
     res.render("mycart.ejs", {
       // products: products,
       cart: cart,
       name: req.session.name,
-      isSeller: req.session.user.isSeller,
+      isSeller: req.session.user.role,
     });
   } else {
     res.render("mycart.ejs", {
       // products: products,
       cart: [],
       name: req.session.name,
-      isSeller: req.session.user.isSeller,
+      isSeller: req.session.user.role,
     });
   }
 };

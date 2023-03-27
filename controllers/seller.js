@@ -1,12 +1,24 @@
 const ProductModal = require("../database/product");
 const UserModal = require("../database/users");
 const PlaceorderModal = require("../database/placeorder");
-const {
-  getMyDeleviriesWithKeySellerBy_Id,
-} = require("../services/placeorderMongoServices");
-const {
-  sellerProductWithLimitsAndSkips,
-} = require("../services/productMongoServices");
+const dotenv = require("dotenv");
+dotenv.config();
+
+if (process.env.ISSQL) {
+  var {
+    getMyDeleviriesWithKeySellerBy_Id,
+  } = require("../services/sqlservices/placeorderSqlServices");
+  var {
+    sellerProductWithLimitsAndSkips,
+  } = require("../services/sqlservices/productSqlServices");
+} else {
+  var {
+    getMyDeleviriesWithKeySellerBy_Id,
+  } = require("../services/placeorderMongoServices");
+  var {
+    sellerProductWithLimitsAndSkips,
+  } = require("../services/productMongoServices");
+}
 const addProductGet = async (req, res) => {
   // let user = await UserModal.findOne({ username: req.session.user.username });
   let page = 0;
@@ -20,11 +32,11 @@ const addProductGet = async (req, res) => {
     skip,
     limit
   );
-
+  console.log("seller panel gety");
   res.render("seller.ejs", {
     products: products,
     name: req.session.user.name,
-    isSeller: req.session.user.isSeller,
+    isSeller: req.session.user.role,
     page: page,
   });
 };
@@ -39,7 +51,7 @@ const deliverProductGet = async (req, res) => {
   res.render("mydeliveries.ejs", {
     deliveries: placeorders,
     name: req.session.user.name,
-    isSeller: req.session.user.isSeller,
+    isSeller: req.session.user.role,
   });
 };
 module.exports = { addProductGet, deliverProductGet };

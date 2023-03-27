@@ -12,14 +12,14 @@
     <h5 class="card-title"><%=data.name %></h5>
     <div id="<%=data._id%>">
 
-      <button  class="btn btn-secondary minus"onclick="checkquantity(`<%=data.quantity%>`,`<%=data._id%>`)"    > - </button>
+      <button  class="btn btn-secondary minus"onclick="checkquantity(`<%=data.stock%>`,`<%=data._id%>`)"    > - </button>
       <span class="quantity" ><%=quantity %> </span>
       
-    <button class="btn btn-secondary plus" onclick="checkquantity(`<%=data.quantity%>`,`<%=data._id%>`)"  > + </button>
-      <span class="left" >Stock left: <%=data.quantity%></span>
+    <button class="btn btn-secondary plus" onclick="checkquantity(`<%=data.stock%>`,`<%=data._id%>`)"  > + </button>
+      <span class="left" >Stock left: <%=data.stock%></span>
      <br>
       <a href="/product/deletecart/<%=data._id%>" class="btn btn-danger delete my-1">Delete  </a>
-      <a href="/product/<%=data._id%>" class="btn btn-warning my-1 ">View Details </a>
+      <a href="/product/<%=data.product_id%>" class="btn btn-warning my-1 ">View Details </a>
     </div>
    
   </div>

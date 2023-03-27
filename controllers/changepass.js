@@ -1,8 +1,12 @@
-const fs = require("fs");
-const dir =
-  "/home/yogesh/webprojects/CodeQuotient/web-projects-Html-Css-Js-/EcommerceWithMongo/user.txt";
-const UserModal = require("../database/users");
-const { getUserByEmail } = require("../services/userMongoServices");
+const dotenv = require("dotenv");
+dotenv.config();
+if (process.env.ISSQL) {
+  var {
+    getUserByEmailAndUpdatePassword,
+  } = require("../services/sqlservices/userSqlServices");
+} else {
+  var { getUserByEmail } = require("../services/userMongoServices");
+}
 const changePassGet = (req, res) => {
   let name = req.session.name;
   res.render("changepass.ejs", { name, err: null, isSeller: false });
@@ -19,9 +23,11 @@ const changePassPost = async (req, res) => {
     return;
   }
 
-  let user = await getUserByEmail( req.session.user.email);
-  user.password = pass;
-  await user.save();
+  let user = await getUserByEmailAndUpdatePassword(
+    req.session.user.email,
+    pass
+  );
+
   res.redirect("/login");
   // res.send("password changed sucessfully");
   return;

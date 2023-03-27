@@ -5,8 +5,8 @@ const {
   mainHomeGet,
   fetchAllGet,
 } = require("../controllers/home");
-const router = express.Router();
 
+const router = express.Router();
 const isAuth = require("../middleware/isAuth");
 const isSeller = require("../middleware/isSeller");
 router.route("/verifyEmail/:token").get(veriyTokenGet);

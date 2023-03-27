@@ -1,9 +1,13 @@
-const fs = require("fs");
-const dir =
-  "/home/yogesh/webprojects/CodeQuotient/web-projects-Html-Css-Js-/EcommerceWithMongo/user.txt";
-  const UserModal = require("../database/users");
-  const forgotPass = require("../methods/forgotEmail");
-const { getUserByEmail } = require("../services/userMongoServices");
+const dotenv = require("dotenv");
+dotenv.config();
+const forgotPass = require("../methods/forgotEmail");
+
+if (process.env.ISSQL) {
+  var { getUserByEmail } = require("../services/sqlservices/userSqlServices");
+} else {
+  var { getUserByEmail } = require("../services/userMongoServices");
+}
+
 const forgetUserGet = (req, res) => {
   res.render("forgot.ejs");
 };

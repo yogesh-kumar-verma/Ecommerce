@@ -38,6 +38,7 @@
     ,isSeller:isSeller}); %>
     <br />
     <br />
+
     <div id="maincontainer">
       <div style="z-index: 1">
         <% cart.forEach((cartitem)=>{ %>
@@ -50,23 +51,23 @@
               <div class="col-sm-4 col-12">
                 <img
                   class="img-fluid"
-                  src=" <%=cartitem.item.images[0]%>"
+                  src=" <%=cartitem.images%>"
                   alt="Card image cap"
                   style="max-height: 300px"
                 />
               </div>
               <div class="col-sm-8 col-12 d-flex align-items-center">
                 <div class="card-body">
-                  <h5 class="card-title">Name: <%=cartitem.item.name %></h5>
+                  <h5 class="card-title">Name: <%=cartitem.name %></h5>
                   <h5 class="card-title">
-                    Description:<%=cartitem.item.desc %>
+                    Description:<%=cartitem.description %>
                   </h5>
-                  <h5 class="card-title">Price:<%=cartitem.item.price %></h5>
+                  <h5 class="card-title">Price:<%=cartitem.price %></h5>
                   <h5 class="card-title">Quantity:<%=cartitem.quantity%></h5>
                   <h5 class="card-title">
-                    Total:<%= cartitem.quantity*cartitem.item.price%>
+                    Total:<%= cartitem.quantity*cartitem.price%>
                   </h5>
-                  <%grandtotal=grandtotal+cartitem.quantity*cartitem.item.price%>
+                  <%grandtotal=grandtotal+cartitem.quantity*cartitem.price%>
                 </div>
               </div>
             </div>
@@ -92,6 +93,27 @@
           type="text"
           class="py-2 form-control"
           placeholder="building no.,street no , area,city ,"
+        />
+        <input
+          name="city"
+          id="city"
+          type="text"
+          class="py-2 form-control"
+          placeholder=" city ,"
+        />
+        <input
+          name="state"
+          id="state"
+          type="text"
+          class="py-2 form-control"
+          placeholder="state"
+        />
+        <input
+          name="pincode"
+          id="pincode"
+          type="text"
+          class="py-2 form-control"
+          placeholder="pincode"
         />
 
         <br />

@@ -1,8 +1,24 @@
-const ProductModal = require("../database/product");
-const UserModal = require("../database/users");
-const { deleteAllSelllerProduct } = require("../services/productMongoServices");
-const { createSeller, allSeller, deleteUser } = require("../services/userMongoServices");
-
+const dotenv = require("dotenv");
+dotenv.config();
+if (process.env.ISSQL) {
+  var {
+    deleteAllSelllerProduct,
+  } = require("../services/sqlservices/productSqlServices");
+  var {
+    createSeller,
+    allSeller,
+    deleteUser,
+  } = require("../services/sqlservices/userSqlServices");
+} else {
+  var {
+    deleteAllSelllerProduct,
+  } = require("../services/productMongoServices");
+  var {
+    createSeller,
+    allSeller,
+    deleteUser,
+  } = require("../services/userMongoServices");
+}
 const adminGet = async (req, res) => {
   res.render("logadmin.ejs", { error: null });
 };

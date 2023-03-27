@@ -1,5 +1,5 @@
 function isSeller(req, res, next) {
-  if (req.session.user.isSeller) {
+  if (req.session.user.role) {
     next();
     return;
   }

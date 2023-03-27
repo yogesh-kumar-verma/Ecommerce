@@ -23,12 +23,12 @@ const placeorder_routes = require("./routes/placeorder");
 const admin_routes = require("./routes/admin");
 const home_routes = require("./routes/home");
 // data base connectivity and calling
+dotenv.config();
 const initDB = require("./database/init");
 
 initDB().catch((err) => console.log(err));
 
 // default middle wares to use
-dotenv.config();
 app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

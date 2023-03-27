@@ -10,22 +10,40 @@ const uploadsdir =
 const { v1: uuidv1, v4: uuidv4 } = require("uuid");
 const ProductModal = require("../database/product");
 const CartModal = require("../database/cart");
-const {
-  cartGetByUsername,
-  cartUpdateByUsername,
-  createCart,
-  cartGetByKeyUserWith_Id,
-  cartUpdateBy_Id,
-  deleteCartByItem,
-  updateCart,
-  cartGetByUsernameWithCartitems,
-} = require("../services/cartMongoServices");
-const {
-  getProductBy_Id,
-  addNewProduct,
-  deleteProductBy_Id,
-  updateProductDetailsBy_Id,
-} = require("../services/productMongoServices");
+const dotenv = require("dotenv");
+dotenv.config();
+if (process.env.ISSQL) {
+  var {
+    createCart,
+
+    deleteCartBy_Id,
+    updateCart,
+    cartGetByIdWithCartitems,
+  } = require("../services/sqlservices/cartSqlServices");
+  var {
+    getProductBy_Id,
+    addNewProduct,
+    deleteProductBy_Id,
+    updateProductDetailsBy_Id,
+  } = require("../services/sqlservices/productSqlServices");
+} else {
+  var {
+    cartGetByUsername,
+    cartUpdateByUsername,
+    createCart,
+    cartGetByKeyUserWith_Id,
+    cartUpdateBy_Id,
+    deleteCartByItem,
+    updateCart,
+    cartGetByUsernameWithCartitems,
+  } = require("../services/cartMongoServices");
+  var {
+    getProductBy_Id,
+    addNewProduct,
+    deleteProductBy_Id,
+    updateProductDetailsBy_Id,
+  } = require("../services/productMongoServices");
+}
 const productGet = async (req, res) => {
   const { id } = req.params;
   let product = await getProductBy_Id(id);
@@ -33,55 +51,43 @@ const productGet = async (req, res) => {
   res.render("item.ejs", {
     product: product,
     name: req.session.name,
-    isSeller: req.session.user.isSeller,
+    isSeller: req.session.user.role,
   });
   return;
 };
 const addcartmoreGet = async (req, res) => {
   const { id } = req.params;
-  console.log(id);
 
-  let { username } = req.session.user;
-  let cart = await cartGetByUsernameWithCartitems(username);
+  let { _id } = req.session.user;
+  let cart = await cartGetByIdWithCartitems(_id);
   let quantity;
-  if (cart !== null) {
-    let not_in_cart = true;
-
-    cart.forEach(async (value) => {
-      if (value.item._id == id) {
-        value.quantity = value.quantity + 1;
-        quantity = value.quantity;
-        not_in_cart = false;
-        await updateCart(value._id, quantity);
-      }
-    });
-    if (not_in_cart) {
-      await createCart(req.session.user.username, id, 1);
-      quantity = 1;
+  cart.forEach(async (value) => {
+    if (value._id == id) {
+      value.quantity = value.quantity + 1;
+      quantity = value.quantity;
+      not_in_cart = false;
+      await updateCart(value._id, quantity);
     }
-  } else {
-    await createCart(username, id, 1);
+  });
 
-    quantity = 1;
-  }
   res.send(JSON.stringify(quantity));
 };
 const addcartGet = async (req, res) => {
   const { id } = req.params;
-  console.log(id);
+
   // res.send("added to cart");
   // return;
 
-  let { username } = req.session.user;
+  let { _id, username } = req.session.user;
 
-  let cart = await cartGetByUsernameWithCartitems(username);
+  let cart = await cartGetByIdWithCartitems(_id);
   let product = await getProductBy_Id(id);
   let quantity;
-  console.log(cart);
-  if (cart !== null) {
+
+  if (cart !== undefined) {
     let not_in_cart = true;
     cart.forEach(async (value) => {
-      if (value.item._id == id) {
+      if (value.product_id == id) {
         value.quantity = value.quantity + 1;
         quantity = value.quantity;
         not_in_cart = false;
@@ -90,14 +96,15 @@ const addcartGet = async (req, res) => {
     });
     if (not_in_cart) {
       // cart.cartitems.push(cartItem);
-      await createCart(req.session.user.username, id, 1);
+
+      await createCart(req.session.user._id, id, 1);
 
       quantity = 1;
     }
 
     res.redirect("/cart");
   } else {
-    await createCart(username, id, 1);
+    await createCart(req.session.user._id, id, 1);
 
     quantity = 1;
     res.redirect("/cart");
@@ -108,13 +115,13 @@ const addcartGet = async (req, res) => {
 const minusGet = async (req, res) => {
   const { id } = req.params;
 
-  let { username } = req.session.user;
+  let { _id } = req.session.user;
   let quantity;
-  let cart = await cartGetByUsernameWithCartitems(username);
+  let cart = await cartGetByIdWithCartitems(_id);
 
-  if (cart !== null) {
+  if (cart !== undefined) {
     cart.forEach(async (value) => {
-      if (value.item._id == id) {
+      if (value._id == id) {
         value.quantity = value.quantity - 1;
         quantity = value.quantity;
         await updateCart(value._id, quantity);
@@ -126,7 +133,7 @@ const minusGet = async (req, res) => {
 const deletecartGet = async (req, res) => {
   const { id } = req.params;
   let { username } = req.session.user;
-  let deltecart = await deleteCartByItem(id, username);
+  let deltecart = await deleteCartBy_Id(id);
 
   res.redirect("/cart");
 };

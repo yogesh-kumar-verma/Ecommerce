@@ -1,4 +1,6 @@
 const ProductModal = require("../database/product");
+const sql = require("mssql");
+let { sqlc } = require("../database/pool");
 
 const getProductBy_Id = async (id) => {
   let product = await ProductModal.findOne({ _id: id });
@@ -30,12 +32,7 @@ const addNewProduct = async (_id, name, desc, quantity, price, path) => {
   product.images[0] = path;
   await product.save();
 };
-const updateProductWithId = async (id, quantity) => {
-  let product = await ProductModal.updateOne(
-    { id: id },
-    { $set: { quantity: quantity } }
-  );
-};
+
 const updateProductWith_Id = async (id, quantity) => {
   let product = await ProductModal.updateOne(
     { _id: id },
@@ -65,7 +62,7 @@ const deleteProductBy_Id = async (id) => {
   let product = await ProductModal.deleteOne({ _id: id });
 };
 const deleteAllSelllerProduct = async (id) => {
-  await ProductModal.deleteOne({ seller: id });
+  await ProductModal.delete({ seller: id });
 };
 
 module.exports = {
@@ -73,7 +70,7 @@ module.exports = {
   getAllProducts,
   productWithLimitsAndSkips,
   getProductBy_Id,
-  updateProductWithId,
+
   updateProductWith_Id,
   updateProductDetailsBy_Id,
   deleteProductBy_Id,

@@ -20,31 +20,7 @@ const cartGetByUsernameWithCartitems = async (username) => {
   return cart;
 };
 
-const cartGetByUsername = async (username) => {
-  let cart = await CartModal.findOne({ username: username });
-  return cart;
-};
 
-const cartGetByKeyUserWith_Id = async (_id) => {
-  let cart = await CartModal.find({ user: _id });
-  return cart;
-};
-const deleteCartByUsername = async (username) => {
-  await CartModal.deleteOne({ username: username });
-};
-const cartUpdateByUsername = async (username, cartitems) => {
-  let cartup = await CartModal.updateOne(
-    { username: username },
-    { $set: { cartitems: cartitems } }
-  );
-  return cartup;
-};
-const cartUpdateBy_Id = async (username, cartitems) => {
-  let cartup = await CartModal.updateOne(
-    { user: req.session.user._id },
-    { $set: { cartitems: cart.cartitems } }
-  );
-};
 module.exports = {
   cartGetByUsernameWithCartitems,
 

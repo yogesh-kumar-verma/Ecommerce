@@ -1,6 +1,12 @@
+const dotenv = require("dotenv");
+dotenv.config();
 const UserModal = require("../database/users");
-const { getUserByMailToken } = require("../services/userMongoServices");
+if(process.env.ISSQL){
+  var { getUserByMailToken } = require("../services/sqlservices/userSqlServices");
 
+}
+{var { getUserByMailToken } = require("../services/userMongoServices");
+}
 const resetGet = async (req, res) => {
   const { token } = req.params;
 

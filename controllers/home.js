@@ -1,12 +1,22 @@
-const ProductModal = require("../database/product");
-const UserModal = require("../database/users");
-const {
-  productWithLimitsAndSkips,
-} = require("../services/productMongoServices");
-const {
-  getUserByMailToken,
-  updateUserWithToken,
-} = require("../services/userMongoServices");
+const dotenv = require("dotenv");
+dotenv.config();
+if (process.env.ISSQL) {
+  var {
+    productWithLimitsAndSkips,
+  } = require("../services/sqlservices/productSqlServices");
+  var {
+    getUserByMailToken,
+    updateUserWithToken,
+  } = require("../services/sqlservices/userSqlServices");
+} else {
+  var {
+    productWithLimitsAndSkips,
+  } = require("../services/productMongoServices");
+  var {
+    getUserByMailToken,
+    updateUserWithToken,
+  } = require("../services/userMongoServices");
+}
 
 const veriyTokenGet = async (req, res) => {
   const { token } = req.params;
@@ -14,9 +24,9 @@ const veriyTokenGet = async (req, res) => {
   let user = await getUserByMailToken(token);
 
   if (user !== null) {
-    let newuser = await updateUserWithToken(token);
+    await updateUserWithToken(token);
 
-    req.session.user = newuser;
+    req.session.user = user;
     req.session.is_logged_in = true;
     req.session.user.isVerified = true;
   }
@@ -35,13 +45,13 @@ const homeGet = async (req, res) => {
 
   if (req.session.is_logged_in) {
     name = req.session.name;
-    isSeller = req.session.user.isSeller;
+    isSeller = req.session.user.role;
   }
   res.render("home.ejs", { name, products, page, isSeller });
 };
 const mainHomeGet = async (req, res) => {
   let name = req.session.name;
-  let isSeller = req.session.user.isSeller;
+  let isSeller = req.session.user.role;
   let page = 1;
   let limit = 8;
   let skip = (page - 1) * limit;
@@ -60,7 +70,7 @@ const fetchAllGet = async (req, res) => {
   let isSeller = false;
   if (req.session.is_logged_in) {
     name = req.session.name;
-    isSeller = req.session.user.isSeller;
+    isSeller = req.session.user.role;
   }
 
   res.render("home.ejs", { name, products, page, isSeller });
