@@ -22,12 +22,14 @@ const getUserByEmailAndUpdatePassword = async (email, password) => {
     .query(`update users set password=@password where email = @email`);
 };
 const getUserByMailToken = async (token) => {
+  console.log("yaha par hai ");
   let pool = await sqlc;
   let result = await pool
     .request()
     .input("mailToken", sql.VarChar, token)
     .query(`select * from users where mailToken = @mailToken`);
   let user = result.recordset[0];
+  console.log(result);
   return user;
 };
 const getUserByUsername = async (username) => {

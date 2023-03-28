@@ -22,6 +22,7 @@ const seller_routes = require("./routes/seller");
 const placeorder_routes = require("./routes/placeorder");
 const admin_routes = require("./routes/admin");
 const home_routes = require("./routes/home");
+const payment_routes = require("./routes/payment");
 // data base connectivity and calling
 dotenv.config();
 const initDB = require("./database/init");
@@ -49,6 +50,7 @@ app.use(
   })
 );
 app.use("/", home_routes);
+app.use("/payment", payment_routes);
 app.use("/login", login_routes);
 app.use("/changepass", changepass_routes);
 app.use("/forgot", forget_routes);

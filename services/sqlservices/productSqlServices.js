@@ -31,7 +31,7 @@ const productWithLimitsAndSkips = async (skip, limit) => {
 const sellerProductWithLimitsAndSkips = async (_id, skip, limit) => {
   let pool = await sqlc;
   let result = await pool
-    .request() 
+    .request()
     .input("seller", sql.Int, _id)
     .input("offset", sql.Int, skip)
     .input("limit", sql.Int, limit)
@@ -42,7 +42,7 @@ const sellerProductWithLimitsAndSkips = async (_id, skip, limit) => {
   console.log(products);
   return products;
 };
-sellerProductWithLimitsAndSkips(2, 3, 3);
+
 const addNewProduct = async (_id, name, desc, quantity, price, path) => {
   let pool = await sqlc;
   let result = await pool
@@ -56,16 +56,6 @@ const addNewProduct = async (_id, name, desc, quantity, price, path) => {
     .query(
       `INSERT into products (seller,description,[images],quantity,price,name) VALUES (@seller,@description,@images,@quantity,@price,@name) `
     );
-};
-
-const updateProductWith_Id = async (id, quantity) => {
-  let pool = await sqlc;
-  let result = await pool
-    .request()
-    .input("_id", sql.Int, id)
-
-    .input("quantity", sql.Int, quantity)
-    .query(` update products set quantity=@quantity where _id=@_id `);
 };
 
 const updateProductDetailsBy_Id = async (
@@ -111,7 +101,6 @@ module.exports = {
   productWithLimitsAndSkips,
   getProductBy_Id,
 
-  updateProductWith_Id,
   updateProductDetailsBy_Id,
   deleteProductBy_Id,
   addNewProduct,

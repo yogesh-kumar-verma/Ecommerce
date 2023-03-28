@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const sql = require("mssql");
-let { ISSQL, user, password, server, database, port } = process.env;
+ 
+let { ISSQL, user, password, server, database, port, mongodconnect } =
+  process.env;
 // main().catch((err) => console.log(err));
 const config = {
   user: user,
@@ -24,7 +26,7 @@ if (process.env.ISSQL) {
   module.exports = async function main() {
     await mongoose.connect("mongodb://127.0.0.1:27017/EcommerceWithSeller");
     // await mongoose.connect(
-    //   "mongodb+srv://yogesh:Vyogesh07032002@cluster0.zjs4vuh.mongodb.net/ecommerce?retryWrites=true&w=majority"
+    //  mongodconnect
     // );
 
     console.log("database connected");

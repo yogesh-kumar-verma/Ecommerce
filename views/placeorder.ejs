@@ -40,7 +40,7 @@
     <br />
 
     <div id="maincontainer">
-      <div style="z-index: 1">
+      <div style="z-index: 1" id="maincon">
         <% cart.forEach((cartitem)=>{ %>
         <div
           style="background-color: rgb(231, 231, 231); width: 100%"
@@ -76,62 +76,76 @@
 
         <% })%>
       </div>
-      <div
+      <div id="addressbar">
+
+        <div
         class="d-flex justify-content-center align-items-center"
         style="
-          position: fixed;
-          bottom: 2rem;
-          width: 100%;
-          z-index: 2;
-          background-color: rgb(123, 173, 219);
-        "
-      >
+            position: fixed;
+            bottom: 2rem;
+            width: 100%;
+            z-index: 2;
+            background-color: rgb(123, 173, 219);
+            "
+        >
         <label for="address"><h3>Delivery Address:</h3> </label>
         <input
-          name="address"
-          id="address"
-          type="text"
-          class="py-2 form-control"
-          placeholder="building no.,street no , area,city ,"
-        />
-        <input
-          name="city"
-          id="city"
-          type="text"
-          class="py-2 form-control"
-          placeholder=" city ,"
-        />
-        <input
-          name="state"
-          id="state"
-          type="text"
-          class="py-2 form-control"
-          placeholder="state"
-        />
-        <input
+            name="address"
+            id="address"
+            type="text"
+            class="py-2 form-control"
+            placeholder="building no.,street no , area,city ,"
+          />
+          <input
+            name="city"
+            id="city"
+            type="text"
+            class="py-2 form-control"
+            placeholder=" city ,"
+          />
+          <input
+            name="state"
+            id="state"
+            type="text"
+            class="py-2 form-control"
+            placeholder="state"
+          />
+          <input
           name="pincode"
           id="pincode"
           type="text"
           class="py-2 form-control"
           placeholder="pincode"
-        />
-
-        <br />
-        <button
+          />
+          
+          <br />
+          <button
           class="btn btn-primary mx-4 py-2"
           onclick="placeorder(`<%=grandtotal%>`)"
-        >
+          >
           Pay the bill
         </button>
       </div>
       <div style="position: fixed; right: 3rem; bottom: 9rem; z-index: 3">
-        <h3>Grand Total:<%=grandtotal%></h3>
+        <h3>Grand Total:<span id="grantotal"><%=grandtotal%></span></h3>
       </div>
     </div>
+  </div>
+    </div>
     <script>
-      function placeorder(total) {
+      if (document.getElementById("maincon").innerText.length < 2) {
+        document.getElementById("addressbar").style.display = "none";
+        document.getElementById("maincon").innerHTML =
+            "<br><br><h2>Please Enter Some Purchase  Something Before purchasing </h2>";
+      }
+
+      function placeorder() {
         // console.log(total);
+        let total= parseInt(document.getElementById("grantotal").innerText);
         let address = document.getElementById("address").value;
+        let city = document.getElementById("city").value;
+        let state = document.getElementById("state").value;
+        let pincode = document.getElementById("pincode").value;
         // console.log(address);
         if (!address) {
           alert("please enter a valid address");
@@ -143,7 +157,7 @@
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ address: address }),
+            body: JSON.stringify({ address: address,city:city,state:state,pincode:pincode }),
           }).then(res);
         }
       }

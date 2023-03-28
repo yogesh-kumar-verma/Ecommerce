@@ -38,6 +38,7 @@
     <%- include('partials/header', {name: name ,isSeller:isSeller}); %>
     <br />
     <br />
+
     <h1 class="text-center">Your Pending Delivery</h1>
     <div class="d-flex flex-row row" id="maincon">
       <table class="table py-2 mx-3 my-3 table-striped">
@@ -45,20 +46,24 @@
           <tr>
             <th scope="col">ITEM ID</th>
             <th scope="col">ITEM Name</th>
-            <th scope="col">QUANTITY</th>
+            <th scope="col">ITEM Price</th>
+            <th scope="col">Q-Ordered</th>
+            <th scope="col">TOTAL</th>
             <th scope="col">ADDRESS</th>
-            <th scope="col">USER TO BE DELIVER</th>
+            <th scope="col">STATUS</th>
           </tr>
         </thead>
         <tbody>
           <% deliveries.forEach((delivery)=>{ %>
 
           <tr>
-            <th scope="row"><%=delivery._id%></th>
-            <td><%= delivery.item.name%></td>
-            <td><%=delivery.quantity%></td>
+            <th scope="row"><%=delivery.order_id%></th>
+            <td><%= delivery.name%></td>
+            <td><%=delivery.order_total/delivery.quantity_ordered%></td>
+            <td><%=delivery.quantity_ordered%></td>
+            <td><%=delivery.order_total%></td>
             <td><%=delivery.address%></td>
-            <td>@<%=delivery.username%></td>
+            <td><%=delivery.status%></td>
           </tr>
 
           <% })%>

@@ -8,6 +8,7 @@ if (process.env.ISSQL) {
   var {
     cartGetByIdWithCartitems,
     deleteCartBy_Id,
+    cartGetByIdWithCartitemsWithQuantityLimit,
   } = require("../services/sqlservices/cartSqlServices");
   var {
     getProductBy_Id,
@@ -19,6 +20,7 @@ if (process.env.ISSQL) {
     deletePlaceOrderBy_Id,
 
     getMyordersWithItemsBy_Id,
+    confirmPlaceOrderBy_Id,
   } = require("../services/sqlservices/placeorderSqlServices");
 } else {
   var {
@@ -38,7 +40,9 @@ if (process.env.ISSQL) {
   } = require("../services/placeorderMongoServices");
 }
 const placeOrderGet = async (req, res) => {
-  let cart = await cartGetByIdWithCartitems(req.session.user._id);
+  let cart = await cartGetByIdWithCartitemsWithQuantityLimit(
+    req.session.user._id
+  );
 
   res.render("placeorder.ejs", {
     name: req.session.user.name,
@@ -47,30 +51,27 @@ const placeOrderGet = async (req, res) => {
   });
 };
 const placedOrderPost = async (req, res) => {
-  let cart = await cartGetByIdWithCartitems(req.session.user._id);
-
-  // let product = await ProductModal.find({});
-  // console.log(cart);
-  let { total } = req.params;
-  // console.log("req boyd", req.body);
-  // placeorder.username = cart.username;
-  console.log(cart, "CART hai place wla");
-  cart.forEach(async (value) => {
-    let prod = await getProductBy_Id(value.product_id);
-    let quantity = value.stock - value.quantity;
-    let product = await updateProductWith_Id(value.product_id, quantity);
-    await deleteCartBy_Id(value._id);
-  });
-  console.log("yha tk pahuch rha hai");
-  let placeorder = await newOrderPlace(
-    req.body.address,
-    req.body.city,
-    req.body.state,
-    req.body.pincode,
-    req.session.user._id,
-    cart,
-    total
+  let carts = await cartGetByIdWithCartitemsWithQuantityLimit(
+    req.session.user._id
   );
+
+  let { total } = req.params;
+  let { city, address, state, pincode } = req.body;
+  // console.log(city, state, pincode, address);
+  // req.session.address = req.body;
+  // req.session.total = total;
+  // res.render("payment page");
+  carts.forEach(async (cart) => {
+    let placeorder = await newOrderPlace(
+      address,
+      city,
+      state,
+      pincode,
+      req.session.user._id,
+      cart,
+      total
+    );
+  });
 
   res.json("Your Order Placed SucessFully");
   // res.redirect("/placeorder/myorders");
@@ -98,9 +99,17 @@ const placedOrderDelete = async (req, res) => {
   res.redirect("/placeorder/myorders");
   return;
 };
+const placedOrderConfirm = async (req, res) => {
+  let { _id } = req.params;
+
+  let deleteorder = await confirmPlaceOrderBy_Id(_id);
+  res.redirect("/placeorder/myorders");
+  return;
+};
 module.exports = {
   placeOrderGet,
   placedOrderPost,
   placedOrderGet,
   placedOrderDelete,
+  placedOrderConfirm,
 };

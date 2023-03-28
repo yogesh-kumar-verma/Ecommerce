@@ -48,7 +48,7 @@
               class="card-img-top img-fluid"
               src="<%=order.images %>"
               alt="Card image cap"
-              
+              style="max-height: 18rem; min-height: 18rem"
               />
               
               <div class="card-body">
@@ -59,7 +59,7 @@
                   <h5 class="card-title">Price:-<%=order.price%></h5>
                   <h5 class="card-title">Total:-<%=order.price*order.quantity_ordered   %></h5>
                    <a class="btn btn-lg btn-danger"href="cancel/<%=order.order_id%>" >CancelOrder</a >
-                    <a class="btn btn-lg btn-warning mt-2"   href="cancel/<%=order.order_id%>" >Confirm Delivery</a >
+                    <a class="btn btn-lg btn-warning mt-2"   href="confirm/<%=order.order_id%>" >Confirm Delivery</a >
               </div>
           </div>
           

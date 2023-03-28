@@ -88,7 +88,7 @@ const addcartGet = async (req, res) => {
     let not_in_cart = true;
     cart.forEach(async (value) => {
       if (value.product_id == id) {
-        value.quantity = value.quantity + 1;
+        value.quantity = value.quantity;
         quantity = value.quantity;
         not_in_cart = false;
         await updateCart(value._id, quantity);

@@ -51,7 +51,32 @@ const cartGetByIdWithCartitems = async (_id) => {
       products.brand,
       products.category,
       products.colors,
-      products.name  from carts inner join products on products._id = carts.product_id where carts.user_id=@_id`
+      products.name  from carts inner join products on products._id = carts.product_id where carts.user_id=@_id `
+    );
+
+  return result.recordset;
+};
+const cartGetByIdWithCartitemsWithQuantityLimit = async (_id) => {
+  let pool = await sqlc;
+  let result = await pool
+    .request()
+    .input("_id", sql.Int, _id)
+    .query(
+      `select carts._id ,
+      carts.user_id,
+      carts.product_id,
+      products.quantity as 'stock',
+      carts.quantity ,
+      products.seller,
+      products.discount,
+      products.images,
+      products.description,
+      products.price,
+      products.currency,
+      products.brand,
+      products.category,
+      products.colors,
+      products.name  from carts inner join products on products._id = carts.product_id where carts.user_id=@_id and carts.quantity<=products.quantity `
     );
 
   return result.recordset;
@@ -59,7 +84,7 @@ const cartGetByIdWithCartitems = async (_id) => {
 
 module.exports = {
   cartGetByIdWithCartitems,
-
+  cartGetByIdWithCartitemsWithQuantityLimit,
   createCart,
 
   updateCart,

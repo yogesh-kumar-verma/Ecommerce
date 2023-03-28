@@ -59,14 +59,21 @@
           " <br><br><br><h1> Oops its seems you haven't added anything 😊</h1>";
       }
 
-      function checkquantity(quantityleft, id) {
+      function checkquantity(id) {
         // console.log(quantityleft)
+        let quantityleft = document
+          .getElementById(`${id}`)
+          .querySelector(".left").innerText;
         let quantity = document
           .getElementById(`${id}`)
           .querySelector("span").innerText;
-        console.log(parseInt(quantity), quantityleft);
-        if (quantity > parseInt(quantityleft) - 2) {
-          console.log("quanity greater hai ", parseInt(quantityleft));
+        console.log(
+          parseInt(quantity),
+          quantityleft,
+          "yah par hai quantity leftss"
+        );
+        if (quantity >= parseInt(quantityleft)) {
+          // console.log("quanity greater hai ", parseInt(quantityleft), quantity);
           document
             .getElementById(`${id}`)
             .querySelector(".plus").style.display = "none";
@@ -91,7 +98,7 @@
                 .getElementById(`${id}`)
                 .querySelector("span");
               quantity.innerText = `${data}`;
-
+              checkquantity(id);
               if (data < 1) {
                 document
                   .getElementById(`${id}`)
@@ -119,6 +126,7 @@
                 .getElementById(`${id}`)
                 .querySelector("span");
               quantity.innerText = `${data}`;
+              checkquantity(id);
             })
             .catch((error) => {
               console.error("Error:", error);

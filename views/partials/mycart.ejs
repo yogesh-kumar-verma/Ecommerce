@@ -5,18 +5,24 @@
     class="card-img-top img-fluid"
     src="<%=data.images %>"
     alt="Card image cap"
+    style="max-height: 18rem; min-height: 18rem"
     onclick="popup(`<%=data._id%>`,`<%=data.name%>`,`<%=data.description%>`,`<%=data.price%>`,`<%=data.images%>`)"
   />
 
   <div class="card-body">
     <h5 class="card-title"><%=data.name %></h5>
     <div id="<%=data._id%>">
-
-      <button  class="btn btn-secondary minus"onclick="checkquantity(`<%=data.stock%>`,`<%=data._id%>`)"    > - </button>
+      <%if(data.stock>0){%>
+      <button  class="btn btn-secondary minus"   > - </button>
       <span class="quantity" ><%=quantity %> </span>
-      
-    <button class="btn btn-secondary plus" onclick="checkquantity(`<%=data.stock%>`,`<%=data._id%>`)"  > + </button>
-      <span class="left" >Stock left: <%=data.stock%></span>
+      <%if(data.stock>quantity){%>
+    <button class="btn btn-secondary plus"  > + </button>
+    <%}%>
+    <span>Stock left:  <span class="left" > <%=data.stock%></span></span>
+  
+    <%}else {%>
+      <span> Its seems no stock left</span>
+      <%}%>
      <br>
       <a href="/product/deletecart/<%=data._id%>" class="btn btn-danger delete my-1">Delete  </a>
       <a href="/product/<%=data.product_id%>" class="btn btn-warning my-1 ">View Details </a>
