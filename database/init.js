@@ -4,7 +4,7 @@ let { user, password, port, server, database } = process.env;
 // main().catch((err) => console.log(err));
 const config = {
   user: "sa",
-  password: "Vyogesh07032002@",
+  password: "<password>@",
   server: "localhost",
   database: "practice",
   options: {
@@ -25,7 +25,7 @@ const config = {
 module.exports = async function main() {
   await mongoose.connect("mongodb://127.0.0.1:27017/EcommerceWithSeller");
   // await mongoose.connect(
-  //   "mongodb+srv://yogesh:Vyogesh07032002@cluster0.zjs4vuh.mongodb.net/ecommerce?retryWrites=true&w=majority"
+  //   "mongodb+srv://yogesh:<pass>cluster0.zjs4vuh.mongodb.net/ecommerce?retryWrites=true&w=majority"
   // );
 
   console.log("database connected");
